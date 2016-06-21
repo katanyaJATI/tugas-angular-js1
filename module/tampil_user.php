@@ -2,14 +2,12 @@
 include"../config/koneksi.php";
 $no = 0;
 $data = array();
-$pilih = $jeje->query("SELECT * FROM tb_bookmark");
+$pilih = $jeje->query("SELECT * FROM tb_user");
 while($u = $pilih->fetch_assoc()){
 		$no++; 
 		$row_data = array(
 			'no' => $no,
-			'title' => $u['title'],
-			'url' => $u['url'],
-			'description' => $u['description'],
+			'username' => $u['username'],
 			'id' => $u['id']
 		);
 	   array_push($data, $row_data);

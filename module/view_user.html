@@ -1,5 +1,117 @@
-<div ng-controller="table_user as showCase">
+<div ng-controller="userCtrl as showCase">
     <p class="text-danger"><strong>{{ showCase.message }}</strong></p>
-    <br>
+    <p>
+	    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tbh_user"><i class="fa fa-plus"></i> Tambah User</button>
+		<button class="btn btn-sm btn-default" ng-click="showCase.reloadData()"><i class="fa fa-refresh"></i> Reload Data</button>
+	</p>
     <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>
+
+
+<!-- modal add user -->
+<form ng-submit="showCase.simpanData()">
+	<div class="modal fade" id="tbh_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+          		<div class="modal-header">
+           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            		<h4 class="modal-title">Tambah User</h4>
+          		</div>
+          		<div class="modal-body">
+            		<div class="col-md-12 center-margin">
+              			<div class="form-group">
+                			<label>Username</label>
+                			<input type="text" name="username" id="username" ng-model="userText.username" class="form-control" maxlength="20" placeholder="Username" required="">
+              			</div>
+			            <div class="form-group">
+			            	<label>Password</label>
+			            	<input type="password" required="" name="password" id="password" ng-model="userText.password" class="form-control" maxlength="20" placeholder="Password" required="">
+			            </div>
+            			<div class="form-group">
+			                <div class="progress">
+								<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+							    </div>
+							</div>
+              			</div>
+			            <div class="form-group">
+            			    <div class="alert-euy">
+							</div>
+            			</div>
+					</div>
+          		</div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
+		            <button type="submit" class="btn btn-primary simpan_data">Tambah!</button>
+		        </div>
+        	</div>
+		</div>
+    </div>
+</form>
+<!-- /modal add user -->
+
+<!-- modal edit user -->
+<form ng-submit="showCase.ubahData()">
+	<div class="modal fade" id="ubh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+          		<div class="modal-header">
+           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            		<h4 class="modal-title">Ubah User</h4>
+          		</div>
+          		<div class="modal-body">
+            		<div class="col-md-12 center-margin">
+              			<div class="form-group">
+                			<input type="hidden" name="id" id="id" ng-model="userText.id" class="id">
+                			<label>Username</label>
+                			<input type="text" name="username" id="username" ng-model="userText.username" class="form-control username" maxlength="20" placeholder="Username" readonly="">
+              			</div>
+			            <div class="form-group">
+			            	<label>Password Lama</label>
+			            	<input type="password" required="" name="password_lm" id="password_lm" ng-model="userText.password_lm" class="form-control" maxlength="20" placeholder="Password">
+			            </div>
+			            <div class="form-group">
+			            	<label>Password</label>
+			            	<input type="password" required="" name="password" id="password" ng-model="userText.password" class="form-control" maxlength="20" placeholder="Password">
+			            </div>
+            			<div class="form-group">
+			                <div class="progress">
+								<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+							    </div>
+							</div>
+              			</div>
+			            <div class="form-group">
+            			    <div class="alert-euy">
+							</div>
+            			</div>
+					</div>
+          		</div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
+		            <button type="submit" class="btn btn-primary ubah_data">Ubah!</button>
+		        </div>
+        	</div>
+		</div>
+    </div>
+</form>
+<!-- /modal edit user -->
+
+
 </div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	    /* -------- PANGGIL MODAL EDIT -------- */
+		$('#ubh').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var id = button.data('id') // Extract info from data-* attributes
+			var username = button.data('username') // Extract info from data-* attributes
+			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			var modal = $(this)
+			modal.find('.username').val(username)
+			modal.find('.id').val(id)
+			modal.find('.id_mem').attr('id_mem')
+		})
+	    /* -------- AKHIR PANGGIL MODAL EDIT -------- */
+	})
+</script>

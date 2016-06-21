@@ -1,18 +1,173 @@
-<div ng-controller="table_bookmark as showCase">
-    <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" class="row-border hover">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="person in showCase.persons">
-            <td>{{ $index + 1 }}</td>
-            <td>{{ person.username }}</td>
-            <td>{{ person.id }}</td>
-        </tr>
-        </tbody>
-    </table>
+<div ng-controller="bookmarkCtrl as showCase">
+    <p>
+        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tbh_bookmark"><i class="fa fa-plus"></i> Tambah Bookmark</button>
+        <button ng-click="showCase.reloadData()" type="button" class="btn-sm btn btn-default">
+            <i class="fa fa-refresh"></i>&nbsp;Reload data
+        </button>
+    </p>
+    <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>
+
+<!-- modal detail bookmark -->
+    <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+	        	<div class="modal-header">
+	            	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            		<h4 class="modal-title">Detail Bookmark</h4>
+          		</div>
+          		<div class="modal-body">
+            		<div class="col-md-12 center-margin">
+		            	<div class="form-group">
+		                	<label>Title</label>
+		                	<input type="hidden" name="id" class="id" id="id">
+		                	<input type="text" name="title" id="title" class="form-control title" readonly="" placeholder="Title">
+		            	</div>
+              			<div class="form-group">
+                			<label>Url</label>
+                			<input type="text" name="url" id="url" class="form-control url" readonly="" placeholder="Url">
+			            </div>
+            			<div class="form-group">
+                			<label>Deskripsi</label>
+			                <textarea class="form-control description" readonly="" name="description" id="description" style="height:100px"></textarea>
+            			</div>
+            		</div>
+          		</div>
+          		<div class="modal-footer">
+		            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+		        </div>
+        	</div>
+    	</div>
+    </div>
+<!-- /modal detail bookmark -->
+
+<!-- modal add bookmark -->
+<form ng-submit="showCase.simpanData()">
+	<div class="modal fade" id="tbh_bookmark" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+          		<div class="modal-header">
+           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            		<h4 class="modal-title">Tambah Bookmark</h4>
+          		</div>
+          		<div class="modal-body">
+            		<div class="col-md-12 center-margin">
+              			<div class="form-group">
+                			<label>Title</label>
+                			<input type="text" name="title" id="title" ng-model="bmForm.title" class="form-control" placeholder="Title" required="">
+              			</div>
+			            <div class="form-group">
+			            	<label>Url</label>
+			            	<input type="text" required="" name="url" id="url" ng-model="bmForm.url" class="form-control" placeholder="Url" required="">
+			            </div>
+			            <div class="form-group">
+			            	<label>Deskripsi</label>
+			            	<textarea class="form-control" name="description" id="description" ng-model="bmForm.description" placeholder="Deskripsi"></textarea>
+			            </div>
+            			<div class="form-group">
+			                <div class="progress">
+								<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+							    </div>
+							</div>
+              			</div>
+			            <div class="form-group">
+            			    <div class="alert-euy">
+							</div>
+            			</div>
+					</div>
+          		</div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
+		            <button class="btn btn-primary simpan_data" type="submit">Tambah!</button>
+		        </div>
+        	</div>
+		</div>
+    </div>
+</form>
+<!-- /modal add bookmark -->
+
+<!-- modal edit bookmark -->
+<form ng-submit="showCase.ubahData()">
+	<div class="modal fade" id="ubh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+          		<div class="modal-header">
+           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            		<h4 class="modal-title">Ubah Bookmark</h4>
+          		</div>
+          		<div class="modal-body">
+            		<div id="ubah" class="col-md-12 center-margin">
+              			<div class="form-group">
+                			<label>Title</label>
+                			<input type="hidden" name="id" class="id" ng-model="bmForm.id">
+                			<input type="text" name="title" id="title" ng-model="bmForm.title" class="form-control title" placeholder="Title" required="">
+              			</div>
+			            <div class="form-group">
+			            	<label>Url</label>
+			            	<input type="text" required="" name="url" ng-model="bmForm.url" class="form-control url" placeholder="Url" required="">
+			            </div>
+			            <div class="form-group">
+			            	<label>Deskripsi</label>
+			            	<textarea class="form-control description" name="description" ng-model="bmForm.description" placeholder="Deskripsi"></textarea>
+			            </div>
+            			<div class="form-group">
+			                <div class="progress">
+								<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+							    </div>
+							</div>
+              			</div>
+			            <div class="form-group">
+            			    <div class="alert-euy">
+							</div>
+            			</div>
+					</div>
+          		</div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
+		            <button class="btn btn-primary ubah_data" type="submit">Ubah!</button>
+		        </div>
+        	</div>
+		</div>
+    </div>
+</form>
+<!-- /modal edit bookmark -->
+
+    
 </div>
+
+
+
+<script type="text/javascript">
+	    /* -------- PANGGIL MODAL DETAIL -------- */
+		$('#detail').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var id = button.data('id') // Extract info from data-* attributes
+			var title = button.data('title') // Extract info from data-* attributes
+			var url = button.data('url') // Extract info from data-* attributes
+			var description = button.data('description') // Extract info from data-* attributes
+			// If necessary, you could initiate an AJAX request here 	(and then do the updating in a callback).
+			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			var modal = $(this)
+			modal.find('.id').val(id)
+			modal.find('.title').val(title)
+			modal.find('.url').val(url)
+			modal.find('.description').val(description)
+		})
+	    /* -------- AKHIR PANGGIL MODAL DETAIL -------- */
+
+	    /* -------- PANGGIL MODAL EDIT -------- */
+		$('#ubh').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var id = button.data('id') // Extract info from data-* attributes
+			var title = button.data('title') // Extract info from data-* attributes
+			var url = button.data('url') // Extract info from data-* attributes
+			var description = button.data('description') // Extract info from data-* attributes
+			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			var modal = $(this)
+			modal.find('.id').val(id)
+			modal.find('.title').val(title)
+			modal.find('.url').val(url)
+			modal.find('.description').val(description)
+		})
+	    /* -------- AKHIR PANGGIL MODAL EDIT -------- */
+</script>
