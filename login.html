@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myModule">
   <head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
@@ -11,7 +11,16 @@
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="assets/css/styles.css" rel="stylesheet">
+
+    <!-- JQUERY -->
+     <script src="assets/angular-datatables-master/vendor/jquery/dist/jquery.js"></script>     
+    
+     <!-- ANGULAR -->
+    <script src="assets/angular-datatables-master/vendor/angular/angular.js"></script>
+   
+    <script src="controller/login_ctrl.js"></script>
+
+
 	</head>
 	<body>
 <!--login modal-->
@@ -23,18 +32,29 @@
           <h1 class="text-center">Login</h1>
       </div>
       <div class="modal-body">
-          <form class="form col-md-12 center-block login-form" method="POST">
-            <div class="alert-euy"></div>
-            <div class="form-group">
-              <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
-            </div>
-            <div class="form-group">
-              <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-            </div>
-            <div class="form-group">
-              <a href="index.html#/" class="btn btn-primary btn-lg btn-block login">Sign In</a>
-            </div>
-          </form>
+
+          <div ng-controller="LoginController as loginCtrl">
+            <form name="formLogin" ng-submit="formLogin.$valid && loginCtrl.login()" novalidate>
+                <div class="form-group">
+                    <input name="username" ng-model="username" type="text" class="form-control input-lg" placeholder="Username" required />
+                    <span ng-show="loginCtrl.username.$touched && loginCtrl.username.$invalid" class="text-danger">Masukan Username</span>
+                </div>
+                <div class="form-group">
+                    <input name="password" ng-model="password" type="password" class="form-control input-lg" placeholder="Password" required />
+                    <span ng-show="loginCtrl.password.$touched && loginCtrl.password.$invalid" class="text-danger">Masukan Password</span>
+                </div>
+                
+                <!-- Message -->
+                <div ng-show="formLogin.message" class="alert alert-danger">
+                  {{formLogin.message}}
+                </div>
+                
+                <button type="submit" ng-disabled="formLogin.$invalid" class="btn btn-primary btn-lg btn-block">Sign In</button>
+                
+            </form>
+          </div>
+
+
       </div>
       <div class="modal-footer">
       </div>	
@@ -42,3 +62,5 @@
   </div>
   </div>
 </div>
+</body>
+</html>
